@@ -6,11 +6,11 @@ s.. index:: type
 Tipos
 *****
 
-Solidity is a statically typed language, which means that the type of each
-variable (state and local) needs to be specified (or at least known -
-see :ref:`type-deduction` below) at
-compile-time. Solidity provides several elementary types which can be combined
-to form complex types.
+Solidity es un lenguaje de tipado estático, que significa que cada tipo de
+variable (estado y local) tiene que ser especificada (o al menos conocida -
+ver :ref:`type-deduction` abajo) en tiempo de compilación.
+Solidity proporciona varios tipos elementales que pueden ser combinados para
+crear tipos más complejos.
 
 In addition, types can interact with each other in expressions containing
 operators. For a quick reference of the various operators, see :ref:`order`.
