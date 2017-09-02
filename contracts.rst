@@ -1,10 +1,8 @@
-.. index:: ! contratos
+.. index:: ! contract
 
-#########
-Contratos
-#########
-
-Los contratos en Solidity son similares a las clases en los lenguajes orientados a objeto. Los contratos contienen datos persistentes almacenados en variables de estados y funciones que pueden modificar estas variables. Llamar a una función de un contrato diferente (instancia) realizará una llamada a una función del EVM (Máquina Virtual de Ethereum) para que cambie el contexto de manera que las variables de estado no estén accesibles.
+##########
+Contracts
+##########
 
 .. index:: ! contrato;creacion
 
