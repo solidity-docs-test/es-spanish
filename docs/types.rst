@@ -6,26 +6,42 @@ s.. index:: type
 Tipos
 *****
 
+<<<<<<< HEAD
 Solidity es un lenguaje de tipado estático, que significa que cada tipo de
 variable (estado y local) tiene que ser especificada (o al menos conocida -
 ver :ref:`type-deduction` abajo) en tiempo de compilación.
 Solidity proporciona varios tipos elementales que pueden ser combinados para
 crear tipos más complejos.
+=======
+Solidity is a statically typed language, which means that the type of each
+variable (state and local) needs to be specified.
+Solidity provides several elementary types which can be combined to form complex types.
+>>>>>>> 37a4e9e3dbcf1d59766b2c6d6ab8da6901507ca2
 
 In addition, types can interact with each other in expressions containing
 operators. For a quick reference of the various operators, see :ref:`order`.
 
-.. index:: ! value type, ! type;value
+The concept of "undefined" or "null" values does not exist in Solidity, but newly
+declared variables always have a :ref:`default value<default-value>` dependent
+on its type. To handle any unexpected values, you should use the :ref:`revert function<assert-and-require>` to revert the whole transaction, or return a
+tuple with a second ``bool`` value denoting success.
 
+<<<<<<< HEAD
 Tipos de valor
 ==============
 
 Los siguientes tipos también son llamados tipos de valor porque las variables
 de este tipo serán siempre pasadas como valores, ej. siempre serán copiados cuando
 son usados como argumentos de funciones o en asignaciones.
+=======
+.. include:: types/value-types.rst
 
-.. index:: ! bool, ! true, ! false
+.. include:: types/reference-types.rst
+>>>>>>> 37a4e9e3dbcf1d59766b2c6d6ab8da6901507ca2
 
+.. include:: types/mapping-types.rst
+
+<<<<<<< HEAD
 Booleans
 --------
 
@@ -943,4 +959,8 @@ función o parámetros de retorno.
     el bucle del siguiente snippet es infinito, ya que ``i`` tendrá el tipo
     ``uint8`` y cualquier valor de este tipo es más pequeño que ``2000``.
     ``for (var i = 0; i < 2000; i++) { ... }``
+=======
+.. include:: types/operators.rst
+>>>>>>> 37a4e9e3dbcf1d59766b2c6d6ab8da6901507ca2
 
+.. include:: types/conversion.rst
