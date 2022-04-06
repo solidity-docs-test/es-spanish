@@ -2,10 +2,11 @@
 Solidity mediante ejemplos
 ##########################
 
-.. index:: voting, ballot
+.. include:: examples/voting.rst
 
-.. _voting:
+.. include:: examples/blind-auction.rst
 
+<<<<<<< HEAD
 ********
 Votación
 ********
@@ -609,3 +610,10 @@ Canal de micropagos
 *******************
 
 Por escribir.
+=======
+.. include:: examples/safe-remote.rst
+
+.. include:: examples/micropayment.rst
+
+.. include:: examples/modular.rst
+>>>>>>> c71d0aec8369f30ba778f53d21883b9e579018cc
