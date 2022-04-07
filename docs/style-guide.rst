@@ -8,17 +8,36 @@ Guía de estilo
 Introducción
 ************
 
+<<<<<<< HEAD
 Esta guía pretende proporcionar convenciones de codificación para escribir código con Solidity.
 Esta guía debe ser entendida como un documento en evolución que cambiará con el tiempo según aparecen nuevas convenciones útiles y antiguas convenciones se vuelven obsoletas.
+=======
+This guide is intended to provide coding conventions for writing Solidity code.
+This guide should be thought of as an evolving document that will change over
+time as useful conventions are found and old conventions are rendered obsolete.
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
 
 Muchos proyectos implementarán sus propias guías de estilo. En el caso de conflictos, las guías de estilo específicas del proyecto tendrán prioridad.
 
 La estructura y muchas de las recomendaciones de esta guía de estilo fueron tomadas de Python: `guía de estilo pep8 <https://www.python.org/dev/peps/pep-0008/>`_.
 
+<<<<<<< HEAD
 El objetivo de esta guía *no* es ser la forma correcta o la mejor manera de escribir código con Solidity. El objetivo de esta guía es la *consistencia*. Una cita de python `pep8 <https://www.python.org/dev/peps/pep-0008/#a-foolish-consistency-is-the-hobgoblin-of-little-minds>`_ capta bien este concepto.
 
     Una guía de estilo es sobre consistencia. La consistencia con esta guía de estilo es importante. La consistencia dentro de un proyecto es más importante. La consistencia dentro de un módulo o función es lo más importante.
     Pero sobre todo: saber cuándo ser inconsistente - a veces la guía de estilo simplemente no se aplica. En caso de duda, use su mejor juicio. Mire otros ejemplos y decida qué parece mejor. ¡Y no dude en preguntar!
+=======
+The goal of this guide is *not* to be the right way or the best way to write
+Solidity code.  The goal of this guide is *consistency*.  A quote from python's
+`pep8 <https://www.python.org/dev/peps/pep-0008/#a-foolish-consistency-is-the-hobgoblin-of-little-minds>`_
+captures this concept well.
+
+.. note::
+
+    A style guide is about consistency. Consistency with this style guide is important. Consistency within a project is more important. Consistency within one module or function is most important.
+
+    But most importantly: **know when to be inconsistent** -- sometimes the style guide just doesn't apply. When in doubt, use your best judgment. Look at other examples and decide what looks best. And don't hesitate to ask!
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
 
 
 *****************
@@ -41,72 +60,230 @@ Se deben evitar la mezcla del tabulador y los espacios.
 Líneas en blanco
 ================
 
+<<<<<<< HEAD
 Envuelva las declaraciones de nivel superior en el código de Solidity con dos líneas en blanco.
 
 Sí::
+=======
+Surround top level declarations in Solidity source with two blank lines.
+
+Yes:
+
+.. code-block:: solidity
+
+    // SPDX-License-Identifier: GPL-3.0
+    pragma solidity >=0.4.0 <0.9.0;
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
 
     contract A {
-        ...
+        // ...
     }
 
 
     contract B {
-        ...
+        // ...
     }
 
 
     contract C {
-        ...
+        // ...
     }
 
-No::
+No:
+
+.. code-block:: solidity
+
+    // SPDX-License-Identifier: GPL-3.0
+    pragma solidity >=0.4.0 <0.9.0;
 
     contract A {
-        ...
+        // ...
     }
     contract B {
-        ...
+        // ...
     }
 
     contract C {
-        ...
+        // ...
     }
 
 Dentro de un contrato, rodee las declaraciones de una función con una sola línea en blanco.
 
 Las líneas en blanco se pueden omitir entre grupos de una frase relacionada (tales como las funciones stub en un contrato abstracto)
 
+<<<<<<< HEAD
 Sí::
+=======
+Yes:
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
 
-    contract A {
-        function spam();
-        function ham();
+.. code-block:: solidity
+
+    // SPDX-License-Identifier: GPL-3.0
+    pragma solidity >=0.6.0 <0.9.0;
+
+    abstract contract A {
+        function spam() public virtual pure;
+        function ham() public virtual pure;
     }
 
 
     contract B is A {
-        function spam() {
-            ...
+        function spam() public pure override {
+            // ...
         }
 
-        function ham() {
-            ...
-        }
-    }
-
-No::
-
-    contract A {
-        function spam() {
-            ...
-        }
-        function ham() {
-            ...
+        function ham() public pure override {
+            // ...
         }
     }
 
+No:
+
+.. code-block:: solidity
+
+    // SPDX-License-Identifier: GPL-3.0
+    pragma solidity >=0.6.0 <0.9.0;
+
+    abstract contract A {
+        function spam() virtual pure public;
+        function ham() public virtual pure;
+    }
+
+
+    contract B is A {
+        function spam() public pure override {
+            // ...
+        }
+        function ham() public pure override {
+            // ...
+        }
+    }
+
+<<<<<<< HEAD
 Codificación de archivos de origen
 ==================================
+=======
+.. _maximum_line_length:
+
+Maximum Line Length
+===================
+
+Keeping lines under the `PEP 8 recommendation <https://www.python.org/dev/peps/pep-0008/#maximum-line-length>`_ to a maximum of 79 (or 99)
+characters helps readers easily parse the code.
+
+Wrapped lines should conform to the following guidelines.
+
+1. The first argument should not be attached to the opening parenthesis.
+2. One, and only one, indent should be used.
+3. Each argument should fall on its own line.
+4. The terminating element, :code:`);`, should be placed on the final line by itself.
+
+Function Calls
+
+Yes:
+
+.. code-block:: solidity
+
+    thisFunctionCallIsReallyLong(
+        longArgument1,
+        longArgument2,
+        longArgument3
+    );
+
+No:
+
+.. code-block:: solidity
+
+    thisFunctionCallIsReallyLong(longArgument1,
+                                  longArgument2,
+                                  longArgument3
+    );
+
+    thisFunctionCallIsReallyLong(longArgument1,
+        longArgument2,
+        longArgument3
+    );
+
+    thisFunctionCallIsReallyLong(
+        longArgument1, longArgument2,
+        longArgument3
+    );
+
+    thisFunctionCallIsReallyLong(
+    longArgument1,
+    longArgument2,
+    longArgument3
+    );
+
+    thisFunctionCallIsReallyLong(
+        longArgument1,
+        longArgument2,
+        longArgument3);
+
+Assignment Statements
+
+Yes:
+
+.. code-block:: solidity
+
+    thisIsALongNestedMapping[being][set][toSomeValue] = someFunction(
+        argument1,
+        argument2,
+        argument3,
+        argument4
+    );
+
+No:
+
+.. code-block:: solidity
+
+    thisIsALongNestedMapping[being][set][toSomeValue] = someFunction(argument1,
+                                                                       argument2,
+                                                                       argument3,
+                                                                       argument4);
+
+Event Definitions and Event Emitters
+
+Yes:
+
+.. code-block:: solidity
+
+    event LongAndLotsOfArgs(
+        address sender,
+        address recipient,
+        uint256 publicKey,
+        uint256 amount,
+        bytes32[] options
+    );
+
+    LongAndLotsOfArgs(
+        sender,
+        recipient,
+        publicKey,
+        amount,
+        options
+    );
+
+No:
+
+.. code-block:: solidity
+
+    event LongAndLotsOfArgs(address sender,
+                            address recipient,
+                            uint256 publicKey,
+                            uint256 amount,
+                            bytes32[] options);
+
+    LongAndLotsOfArgs(sender,
+                      recipient,
+                      publicKey,
+                      amount,
+                      options);
+
+Source File Encoding
+====================
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
 
 Se prefiere la codificación del texto en UTF-8 o ASCII.
 
@@ -115,32 +292,45 @@ Importación
 
 Las declaraciones de importación siempre deben colocarse en la parte superior del archivo.
 
+<<<<<<< HEAD
 Sí::
+=======
+Yes:
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
 
-    import "owned";
+.. code-block:: solidity
 
+    // SPDX-License-Identifier: GPL-3.0
+    pragma solidity >=0.4.0 <0.9.0;
 
-    contract A {
-        ...
-    }
-
-
-    contract B is owned {
-        ...
-    }
-
-No::
+    import "./Owned.sol";
 
     contract A {
-        ...
+        // ...
     }
 
 
-    import "owned";
+    contract B is Owned {
+        // ...
+    }
+
+No:
+
+.. code-block:: solidity
+
+    // SPDX-License-Identifier: GPL-3.0
+    pragma solidity >=0.4.0 <0.9.0;
+
+    contract A {
+        // ...
+    }
 
 
-    contract B is owned {
-        ...
+    import "./Owned.sol";
+
+
+    contract B is Owned {
+        // ...
     }
 
 Orden de funciones
@@ -151,21 +341,37 @@ La ordenación ayuda a que los lectores puedan identificar las funciones que pue
 Las funciones deben agruparse de acuerdo con su visibilidad y ser ordenadas de acuerdo a:
 
 - constructor
+<<<<<<< HEAD
 - función fallback (Si existe)
+=======
+- receive function (if exists)
+- fallback function (if exists)
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
 - external
 - public
 - internal
 - private
 
+<<<<<<< HEAD
 Dentro de un grupo, coloque las funciones ``constant`` al final.
 
 Sí::
+=======
+Within a grouping, place the ``view`` and ``pure`` functions last.
 
+Yes:
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
+
+.. code-block:: solidity
+
+    // SPDX-License-Identifier: GPL-3.0
+    pragma solidity >=0.7.0 <0.9.0;
     contract A {
-        function A() {
-            ...
+        constructor() {
+            // ...
         }
 
+<<<<<<< HEAD
         function() {
             ...
         }
@@ -183,22 +389,67 @@ Sí::
         // ...
 
         // Funciones private
+=======
+        receive() external payable {
+            // ...
+        }
+
+        fallback() external {
+            // ...
+        }
+
+        // External functions
+        // ...
+
+        // External functions that are view
+        // ...
+
+        // External functions that are pure
+        // ...
+
+        // Public functions
+        // ...
+
+        // Internal functions
+        // ...
+
+        // Private functions
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
         // ...
     }
 
-No::
+No:
 
+.. code-block:: solidity
+
+    // SPDX-License-Identifier: GPL-3.0
+    pragma solidity >=0.7.0 <0.9.0;
     contract A {
 
+<<<<<<< HEAD
         // Funciones external
         // ...
 
         // Funciones private
+=======
+        // External functions
+        // ...
+
+        fallback() external {
+            // ...
+        }
+        receive() external payable {
+            // ...
+        }
+
+        // Private functions
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
         // ...
 
         // Funciones public
         // ...
 
+<<<<<<< HEAD
         function A() {
             ...
         }
@@ -209,6 +460,14 @@ No::
 
         // Funciones internal
         // ...       
+=======
+        constructor() {
+            // ...
+        }
+
+        // Internal functions
+        // ...
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
     }
 
 Espacios en blanco en expresiones
@@ -216,52 +475,95 @@ Espacios en blanco en expresiones
 
 Evite los espacios en blanco superfluos en las siguientes situaciones:
 
+<<<<<<< HEAD
 Inmediatamente entre paréntesis, llaves o corchetes, con la excepción de declaraciones de una función en una sola línea.
 
 Sí::
+=======
+Immediately inside parenthesis, brackets or braces, with the exception of single line function declarations.
+
+Yes:
+
+.. code-block:: solidity
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
 
     spam(ham[1], Coin({name: "ham"}));
 
-No::
+No:
+
+.. code-block:: solidity
 
     spam( ham[ 1 ], Coin( { name: "ham" } ) );
 
+<<<<<<< HEAD
 Excepción::
+=======
+Exception:
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
 
-    function singleLine() { spam(); }
+.. code-block:: solidity
+
+    function singleLine() public { spam(); }
 
 Inmediatamente después de una coma, punto y coma:
 
+<<<<<<< HEAD
 Sí::
+=======
+Yes:
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
 
-    function spam(uint i, Coin coin);
+.. code-block:: solidity
 
-No::
+    function spam(uint i, Coin coin) public;
 
-    function spam(uint i , Coin coin) ;
+No:
 
+<<<<<<< HEAD
 Más de un espacio alrededor de una asignación u otro operador para alinearlo con otro:
 
 Sí::
+=======
+.. code-block:: solidity
+
+    function spam(uint i , Coin coin) public ;
+
+More than one space around an assignment or other operator to align with another:
+
+Yes:
+
+.. code-block:: solidity
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
 
     x = 1;
     y = 2;
-    long_variable = 3;
+    longVariable = 3;
 
-No::
+No:
 
-    x             = 1;
-    y             = 2;
-    long_variable = 3;
+.. code-block:: solidity
 
+<<<<<<< HEAD
 No incluya un espacio en blanco en la función fallback:
 
 Sí::
+=======
+    x            = 1;
+    y            = 2;
+    longVariable = 3;
 
-    function() {
+Don't include a whitespace in the receive and fallback functions:
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
+
+Yes:
+
+.. code-block:: solidity
+
+    receive() external payable {
         ...
     }
 
+<<<<<<< HEAD
 No::
 
     function () {
@@ -270,14 +572,49 @@ No::
 
 Estructuras de control
 ======================
+=======
+    fallback() external {
+        ...
+    }
+
+No:
+
+.. code-block:: solidity
+
+    receive () external payable {
+        ...
+    }
+
+    fallback () external {
+        ...
+    }
+
+
+Control Structures
+==================
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
 
 Las llaves que denotan el cuerpo de un contrato, biblioteca, funciones y estructuras deberán:
 
+<<<<<<< HEAD
 * Abrir en la misma línea que la declaración
 * Cerrar en su propia línea en el mismo nivel de sangría que la declaración.
 * La llave de apertura debe ser procedida por un solo espacio.
 
 Sí::
+=======
+* open on the same line as the declaration
+* close on their own line at the same indentation level as the beginning of the
+  declaration.
+* The opening brace should be preceded by a single space.
+
+Yes:
+
+.. code-block:: solidity
+
+    // SPDX-License-Identifier: GPL-3.0
+    pragma solidity >=0.4.0 <0.9.0;
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
 
     contract Coin {
         struct Bank {
@@ -286,7 +623,12 @@ Sí::
         }
     }
 
-No::
+No:
+
+.. code-block:: solidity
+
+    // SPDX-License-Identifier: GPL-3.0
+    pragma solidity >=0.4.0 <0.9.0;
 
     contract Coin
     {
@@ -300,7 +642,13 @@ Las mismas recomendaciones se aplican a las estructuras de control ``if``, ``els
 
 Además, debería existir un único espacio entre las estructuras de control ``if``, ``while``, y ``for``, y el bloque entre paréntesis que representa el condicional, así como un único espacio entre el bloque del paréntesis condicional y la llave de apertura.
 
+<<<<<<< HEAD
 Sí::
+=======
+Yes:
+
+.. code-block:: solidity
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
 
     if (...) {
         ...
@@ -310,7 +658,9 @@ Sí::
         ...
     }
 
-No::
+No:
+
+.. code-block:: solidity
 
     if (...)
     {
@@ -325,12 +675,20 @@ No::
 
 Para las estructuras de control cuyo cuerpo sólo contiene declaraciones únicas, se pueden omitir los corchetes *si* la declaración cabe en una sola línea.
 
+<<<<<<< HEAD
 Sí::
+=======
+Yes:
+
+.. code-block:: solidity
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
 
     if (x < 10)
         x += 1;
 
-No::
+No:
+
+.. code-block:: solidity
 
     if (x < 10)
         someArray.push(Coin({
@@ -340,7 +698,13 @@ No::
 
 Para los bloques ``if`` que contienen una condición ``else`` o ``else if``, el ``else`` debe estar en la misma línea que el corchete de cierre del ``if``. Esto es una excepción en comparación con las reglas de otras estructuras de tipo bloque.
 
+<<<<<<< HEAD
 Sí::
+=======
+Yes:
+
+.. code-block:: solidity
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
 
     if (x < 3) {
         x += 1;
@@ -356,7 +720,9 @@ Sí::
     else
         x -= 1;
 
-No::
+No:
+
+.. code-block:: solidity
 
     if (x < 3) {
         x += 1;
@@ -372,53 +738,98 @@ Para declaraciones de función cortas, se recomienda dejar el corchete de apertu
 
 El corchete de cierre debe estar al mismo nivel de sangría que la declaración de la función.
 
+<<<<<<< HEAD
 El corchete de apertura debe estar precedido por un solo espacio.
 
 Sí::
+=======
+The opening brace should be preceded by a single space.
 
-    function increment(uint x) returns (uint) {
+Yes:
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
+
+.. code-block:: solidity
+
+    function increment(uint x) public pure returns (uint) {
         return x + 1;
     }
 
-    function increment(uint x) public onlyowner returns (uint) {
+    function increment(uint x) public pure onlyOwner returns (uint) {
         return x + 1;
     }
 
-No::
+No:
 
-    function increment(uint x) returns (uint)
+.. code-block:: solidity
+
+    function increment(uint x) public pure returns (uint)
     {
         return x + 1;
     }
 
-    function increment(uint x) returns (uint){
+    function increment(uint x) public pure returns (uint){
         return x + 1;
     }
 
-    function increment(uint x) returns (uint) {
+    function increment(uint x) public pure returns (uint) {
         return x + 1;
         }
 
-    function increment(uint x) returns (uint) {
+    function increment(uint x) public pure returns (uint) {
         return x + 1;}
 
+<<<<<<< HEAD
 Se debe especificar la visibilidad de los modificadores para una función antes de cualquier modificador personalizado.
 
 Sí::
+=======
+The modifier order for a function should be:
 
-    function kill() public onlyowner {
+1. Visibility
+2. Mutability
+3. Virtual
+4. Override
+5. Custom modifiers
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
+
+Yes:
+
+.. code-block:: solidity
+
+    function balance(uint from) public view override returns (uint)  {
+        return balanceOf[from];
+    }
+
+    function shutdown() public onlyOwner {
         selfdestruct(owner);
     }
 
-No::
+No:
 
-    function kill() onlyowner public {
+.. code-block:: solidity
+
+    function balance(uint from) public override view returns (uint)  {
+        return balanceOf[from];
+    }
+
+    function shutdown() onlyOwner public {
         selfdestruct(owner);
     }
 
+<<<<<<< HEAD
 Para las declaraciones de función largas, se recomienda dejar a cada argumento su propia línea al mismo nivel de sangría que el cuerpo de la función. El paréntesis de cierre y el corchete de apertura deben de estar en su propia línea también y con el mismo nivel de sangría que la declaración de la función.
 
 Sí::
+=======
+For long function declarations, it is recommended to drop each argument onto
+its own line at the same indentation level as the function body.  The closing
+parenthesis and opening bracket should be placed on their own line as well at
+the same indentation level as the function declaration.
+
+Yes:
+
+.. code-block:: solidity
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
 
     function thisFunctionHasLotsOfArguments(
         address a,
@@ -427,14 +838,18 @@ Sí::
         address d,
         address e,
         address f
-    ) {
+    )
+        public
+    {
         doSomething();
     }
 
-No::
+No:
+
+.. code-block:: solidity
 
     function thisFunctionHasLotsOfArguments(address a, address b, address c,
-        address d, address e, address f) {
+        address d, address e, address f) public {
         doSomething();
     }
 
@@ -443,7 +858,7 @@ No::
                                             address c,
                                             address d,
                                             address e,
-                                            address f) {
+                                            address f) public {
         doSomething();
     }
 
@@ -453,17 +868,26 @@ No::
         address c,
         address d,
         address e,
-        address f) {
+        address f) public {
         doSomething();
     }
 
+<<<<<<< HEAD
 Si una declaración de función larga tiene modificadores, cada uno de ellos debe de estar en su propia línea.
 
 Sí::
+=======
+If a long function declaration has modifiers, then each modifier should be
+dropped to its own line.
+
+Yes:
+
+.. code-block:: solidity
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
 
     function thisFunctionNameIsReallyLong(address x, address y, address z)
         public
-        onlyowner
+        onlyOwner
         priced
         returns (address)
     {
@@ -473,98 +897,257 @@ Sí::
     function thisFunctionNameIsReallyLong(
         address x,
         address y,
-        address z,
+        address z
     )
         public
-        onlyowner
+        onlyOwner
         priced
         returns (address)
     {
         doSomething();
     }
 
-No::
+No:
+
+.. code-block:: solidity
 
     function thisFunctionNameIsReallyLong(address x, address y, address z)
                                           public
-                                          onlyowner
+                                          onlyOwner
                                           priced
                                           returns (address) {
         doSomething();
     }
 
     function thisFunctionNameIsReallyLong(address x, address y, address z)
-        public onlyowner priced returns (address)
+        public onlyOwner priced returns (address)
     {
         doSomething();
     }
 
     function thisFunctionNameIsReallyLong(address x, address y, address z)
         public
-        onlyowner
+        onlyOwner
         priced
         returns (address) {
         doSomething();
     }
 
+<<<<<<< HEAD
 Para las funciones de tipo constructor en contratos heredados que requieren argumentos, si la declaración de la función es larga o difícil de leer, se recomienda poner cada constructor base en su propia línea de la misma manera que con los modificadores.
 
 Sí::
+=======
+Multiline output parameters and return statements should follow the same style recommended for wrapping long lines found in the :ref:`Maximum Line Length <maximum_line_length>` section.
+
+Yes:
+
+.. code-block:: solidity
+
+    function thisFunctionNameIsReallyLong(
+        address a,
+        address b,
+        address c
+    )
+        public
+        returns (
+            address someAddressName,
+            uint256 LongArgument,
+            uint256 Argument
+        )
+    {
+        doSomething()
+
+        return (
+            veryLongReturnArg1,
+            veryLongReturnArg2,
+            veryLongReturnArg3
+        );
+    }
+
+No:
+
+.. code-block:: solidity
+
+    function thisFunctionNameIsReallyLong(
+        address a,
+        address b,
+        address c
+    )
+        public
+        returns (address someAddressName,
+                 uint256 LongArgument,
+                 uint256 Argument)
+    {
+        doSomething()
+
+        return (veryLongReturnArg1,
+                veryLongReturnArg1,
+                veryLongReturnArg1);
+    }
+
+For constructor functions on inherited contracts whose bases require arguments,
+it is recommended to drop the base constructors onto new lines in the same
+manner as modifiers if the function declaration is long or hard to read.
+
+Yes:
+
+.. code-block:: solidity
+
+    // SPDX-License-Identifier: GPL-3.0
+    pragma solidity >=0.7.0 <0.9.0;
+    // Base contracts just to make this compile
+    contract B {
+        constructor(uint) {
+        }
+    }
+
+
+    contract C {
+        constructor(uint, uint) {
+        }
+    }
+
+
+    contract D {
+        constructor(uint) {
+        }
+    }
+
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
 
     contract A is B, C, D {
-        function A(uint param1, uint param2, uint param3, uint param4, uint param5)
+        uint x;
+
+        constructor(uint param1, uint param2, uint param3, uint param4, uint param5)
             B(param1)
             C(param2, param3)
             D(param4)
         {
             // do something with param5
+            x = param5;
         }
     }
 
-No::
+No:
+
+.. code-block:: solidity
+
+    // SPDX-License-Identifier: GPL-3.0
+    pragma solidity >=0.7.0 <0.9.0;
+
+    // Base contracts just to make this compile
+    contract B {
+        constructor(uint) {
+        }
+    }
+
+
+    contract C {
+        constructor(uint, uint) {
+        }
+    }
+
+
+    contract D {
+        constructor(uint) {
+        }
+    }
+
 
     contract A is B, C, D {
-        function A(uint param1, uint param2, uint param3, uint param4, uint param5)
+        uint x;
+
+        constructor(uint param1, uint param2, uint param3, uint param4, uint param5)
         B(param1)
         C(param2, param3)
-        D(param4)
-        {
-            // do something with param5
+        D(param4) {
+            x = param5;
         }
     }
 
-    contract A is B, C, D {
-        function A(uint param1, uint param2, uint param3, uint param4, uint param5)
+
+    contract X is B, C, D {
+        uint x;
+
+        constructor(uint param1, uint param2, uint param3, uint param4, uint param5)
             B(param1)
             C(param2, param3)
             D(param4) {
-            // do something with param5
-        }
+                x = param5;
+            }
     }
 
+<<<<<<< HEAD
 Cuando se declara funciones cortas con una sola declaración, está permitido hacerlo en una solo línea.
 
 Permisible::
+=======
 
-    function shortFunction() { doSomething(); }
+When declaring short functions with a single statement, it is permissible to do it on a single line.
 
+Permissible:
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
+
+.. code-block:: solidity
+
+    function shortFunction() public { doSomething(); }
+
+<<<<<<< HEAD
 Esta guía sobre la declaración de funciones está pensada para mejorar la legibilidad. Sin embargo, los autores deberían utilizar su mejor juicio, ya que esta guía tampoco intenta cubrir todas las posibles permutaciones para las declaraciones de función.
+=======
+These guidelines for function declarations are intended to improve readability.
+Authors should use their best judgment as this guide does not try to cover all
+possible permutations for function declarations.
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
 
 Mapeo
 =====
 
+<<<<<<< HEAD
 Pendiente de hacer
+=======
+In variable declarations, do not separate the keyword ``mapping`` from its
+type by a space. Do not separate any nested ``mapping`` keyword from its type by
+whitespace.
+
+Yes:
+
+.. code-block:: solidity
+
+    mapping(uint => uint) map;
+    mapping(address => bool) registeredAddresses;
+    mapping(uint => mapping(bool => Data[])) public data;
+    mapping(uint => mapping(uint => s)) data;
+
+No:
+
+.. code-block:: solidity
+
+    mapping (uint => uint) map;
+    mapping( address => bool ) registeredAddresses;
+    mapping (uint => mapping (bool => Data[])) public data;
+    mapping(uint => mapping (uint => s)) data;
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
 
 Declaración de variables
 ========================
 
 La declaración de variables tipo array no deben incluir un espacio entre el tipo y el corchete.
 
+<<<<<<< HEAD
 Sí::
+=======
+Yes:
+
+.. code-block:: solidity
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
 
     uint[] x;
 
-No::
+No:
+
+.. code-block:: solidity
 
     uint [] x;
 
@@ -574,46 +1157,101 @@ Otras recommendaciones
 
 * Los strings deben de citarse con comillas dobles en lugar de comillas simples.
 
+<<<<<<< HEAD
 Sí::
+=======
+Yes:
+
+.. code-block:: solidity
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
 
     str = "foo";
     str = "Hamlet says, 'To be or not to be...'";
 
-No::
+No:
+
+.. code-block:: solidity
 
     str = 'bar';
     str = '"Be yourself; everyone else is already taken." -Oscar Wilde';
 
 * Se envuelve los operadores con un solo espacio de cada lado.
 
+<<<<<<< HEAD
 Sí::
+=======
+Yes:
+
+.. code-block:: solidity
+    :force:
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
 
     x = 3;
     x = 100 / 10;
     x += 3 + 4;
     x |= y && z;
 
-No::
+No:
+
+.. code-block:: solidity
+    :force:
 
     x=3;
     x = 100/10;
     x += 3+4;
     x |= y&&z;
 
+<<<<<<< HEAD
 * Para los operadores con una prioridad mayor que otros, se pueden omitir los espacios de cada lado del operador para marcar la precedencia. Esto se hace para mejorar la legibilidad de declaraciones complejas. Se debe usar siempre el mismo número de espacios a cada lado de un operador.
 
 Sí::
+=======
+* Operators with a higher priority than others can exclude surrounding
+  whitespace in order to denote precedence.  This is meant to allow for
+  improved readability for complex statements. You should always use the same
+  amount of whitespace on either side of an operator:
+
+Yes:
+
+.. code-block:: solidity
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
 
     x = 2**3 + 5;
     x = 2*y + 3*z;
     x = (a+b) * (a-b);
 
-No::
+No:
+
+.. code-block:: solidity
 
     x = 2** 3 + 5;
     x = y+z;
     x +=1;
 
+***************
+Order of Layout
+***************
+
+Layout contract elements in the following order:
+
+1. Pragma statements
+2. Import statements
+3. Interfaces
+4. Libraries
+5. Contracts
+
+Inside each contract, library or interface, use the following order:
+
+1. Type declarations
+2. State variables
+3. Events
+4. Modifiers
+5. Functions
+
+.. note::
+
+    It might be clearer to declare types close to their use in events or state
+    variables.
 
 ************************
 Convención sobre nombres
@@ -623,6 +1261,7 @@ Las convenciones sobre nombres son extremadamente útiles siempre y cuando se us
 
 Las recomendaciones de nombres que se dan aquí están pensadas para mejorar la legibilidad, y por lo tanto no se deben considerar como reglas. Son más bien una guía para intentar transmitir la mayor información posible a través del nombre de las cosas.
 
+<<<<<<< HEAD
 Finalmente, la consistencia dentro de un bloque de código siempre debe prevalecer sobre cualquier convención destacada en este documento.
 
 
@@ -652,20 +1291,163 @@ Nombres a evitar
 * ``I`` - Letra mayúscula i
 
 No usar jamás ninguna de estas letras únicas para nombrar una variable. Estas letras generalmente no se diferencian de los dígitos uno y cero.
+=======
+Lastly, consistency within a codebase should always supersede any conventions
+outlined in this document.
+
+
+Naming Styles
+=============
+
+To avoid confusion, the following names will be used to refer to different
+naming styles.
+
+* ``b`` (single lowercase letter)
+* ``B`` (single uppercase letter)
+* ``lowercase``
+* ``UPPERCASE``
+* ``UPPER_CASE_WITH_UNDERSCORES``
+* ``CapitalizedWords`` (or CapWords)
+* ``mixedCase`` (differs from CapitalizedWords by initial lowercase character!)
+
+.. note:: When using initialisms in CapWords, capitalize all the letters of the initialisms. Thus HTTPServerError is better than HttpServerError. When using initialisms in mixedCase, capitalize all the letters of the initialisms, except keep the first one lower case if it is the beginning of the name. Thus xmlHTTPRequest is better than XMLHTTPRequest.
+
+
+Names to Avoid
+==============
+
+* ``l`` - Lowercase letter el
+* ``O`` - Uppercase letter oh
+* ``I`` - Uppercase letter eye
+
+Never use any of these for single letter variable names.  They are often
+indistinguishable from the numerals one and zero.
+
+
+Contract and Library Names
+==========================
+
+* Contracts and libraries should be named using the CapWords style. Examples: ``SimpleToken``, ``SmartBank``, ``CertificateHashRepository``, ``Player``, ``Congress``, ``Owned``.
+* Contract and library names should also match their filenames.
+* If a contract file includes multiple contracts and/or libraries, then the filename should match the *core contract*. This is not recommended however if it can be avoided.
+
+As shown in the example below, if the contract name is ``Congress`` and the library name is ``Owned``, then their associated filenames should be ``Congress.sol`` and ``Owned.sol``.
+
+Yes:
+
+.. code-block:: solidity
+
+    // SPDX-License-Identifier: GPL-3.0
+    pragma solidity >=0.7.0 <0.9.0;
+
+    // Owned.sol
+    contract Owned {
+        address public owner;
+
+        constructor() {
+            owner = msg.sender;
+        }
+
+        modifier onlyOwner {
+            require(msg.sender == owner);
+            _;
+        }
+
+        function transferOwnership(address newOwner) public onlyOwner {
+            owner = newOwner;
+        }
+    }
+
+and in ``Congress.sol``:
+
+.. code-block:: solidity
+
+    // SPDX-License-Identifier: GPL-3.0
+    pragma solidity >=0.4.0 <0.9.0;
+
+    import "./Owned.sol";
+
+
+    contract Congress is Owned, TokenRecipient {
+        //...
+    }
+
+No:
+
+.. code-block:: solidity
+
+    // SPDX-License-Identifier: GPL-3.0
+    pragma solidity >=0.7.0 <0.9.0;
+
+    // owned.sol
+    contract owned {
+        address public owner;
+
+        constructor() {
+            owner = msg.sender;
+        }
+
+        modifier onlyOwner {
+            require(msg.sender == owner);
+            _;
+        }
+
+        function transferOwnership(address newOwner) public onlyOwner {
+            owner = newOwner;
+        }
+    }
+
+and in ``Congress.sol``:
+
+.. code-block:: solidity
+
+    // SPDX-License-Identifier: GPL-3.0
+    pragma solidity ^0.7.0;
+
+
+    import "./owned.sol";
+
+
+    contract Congress is owned, tokenRecipient {
+        //...
+    }
+
+Struct Names
+==========================
+
+Structs should be named using the CapWords style. Examples: ``MyCoin``, ``Position``, ``PositionXY``.
+
+
+Event Names
+===========
+
+Events should be named using the CapWords style. Examples: ``Deposit``, ``Transfer``, ``Approval``, ``BeforeTransfer``, ``AfterTransfer``.
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
 
 
 Contratos y librerías de nombres
 ================================
 
+<<<<<<< HEAD
 Contratos y librerías deben de nombrarse usando el estilo CapWord (PalabrasConLaInicialEnMayuscula).
 
 
 Eventos
 =======
+=======
+Functions should use mixedCase. Examples: ``getBalance``, ``transfer``, ``verifyOwner``, ``addMember``, ``changeOwner``.
+
+
+Function Argument Names
+=======================
+
+Function arguments should use mixedCase. Examples: ``initialSupply``, ``account``, ``recipientAddress``, ``senderAddress``, ``newOwner``.
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
 
 Los eventos deben de nombrarse usando el estilo CapWord (PalabrasConLaInicialEnMayuscula).
 
 
+<<<<<<< HEAD
 Nombres para funciones
 ======================
 
@@ -708,3 +1490,79 @@ Recommendaciones generales
 ==========================
 
 Pendiente de hacer
+=======
+Local and State Variable Names
+==============================
+
+Use mixedCase. Examples: ``totalSupply``, ``remainingSupply``, ``balancesOf``, ``creatorAddress``, ``isPreSale``, ``tokenExchangeRate``.
+
+
+Constants
+=========
+
+Constants should be named with all capital letters with underscores separating
+words. Examples: ``MAX_BLOCKS``, ``TOKEN_NAME``, ``TOKEN_TICKER``, ``CONTRACT_VERSION``.
+
+
+Modifier Names
+==============
+
+Use mixedCase. Examples: ``onlyBy``, ``onlyAfter``, ``onlyDuringThePreSale``.
+
+
+Enums
+=====
+
+Enums, in the style of simple type declarations, should be named using the CapWords style. Examples: ``TokenGroup``, ``Frame``, ``HashStyle``, ``CharacterLocation``.
+
+
+Avoiding Naming Collisions
+==========================
+
+* ``singleTrailingUnderscore_``
+
+This convention is suggested when the desired name collides with that of a
+built-in or otherwise reserved name.
+
+.. _style_guide_natspec:
+
+*******
+NatSpec
+*******
+
+Solidity contracts can also contain NatSpec comments. They are written with a
+triple slash (``///``) or a double asterisk block (``/** ... */``) and
+they should be used directly above function declarations or statements.
+
+For example, the contract from :ref:`a simple smart contract <simple-smart-contract>` with the comments
+added looks like the one below:
+
+.. code-block:: solidity
+
+    // SPDX-License-Identifier: GPL-3.0
+    pragma solidity >=0.4.16 <0.9.0;
+
+    /// @author The Solidity Team
+    /// @title A simple storage example
+    contract SimpleStorage {
+        uint storedData;
+
+        /// Store `x`.
+        /// @param x the new value to store
+        /// @dev stores the number in the state variable `storedData`
+        function set(uint x) public {
+            storedData = x;
+        }
+
+        /// Return the stored value.
+        /// @dev retrieves the value of the state variable `storedData`
+        /// @return the stored value
+        function get() public view returns (uint) {
+            return storedData;
+        }
+    }
+
+It is recommended that Solidity contracts are fully annotated using :ref:`NatSpec <natspec>` for all public interfaces (everything in the ABI).
+
+Please see the section about :ref:`NatSpec <natspec>` for a detailed explanation.
+>>>>>>> e340cf6ca2b924cb42448b36890bcfbed3d716e4
