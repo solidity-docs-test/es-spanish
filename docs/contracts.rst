@@ -1,13 +1,30 @@
 .. index:: ! contract
 
+<<<<<<< HEAD
 #########
 Contratos
 #########
 
 Los contratos en Solidity son similares a las clases en los lenguajes orientados a objeto. Los contratos contienen datos persistentes almacenados en variables de estados y funciones que pueden modificar estas variables. Llamar a una función de un contrato diferente (instancia) realizará una llamada a una función de la EVM (Máquina Virtual de Ethereum) para que cambie el contexto de manera que las variables de estado no estén accesibles.
+=======
+.. _contracts:
 
-.. index:: ! contract;creation
+##########
+Contracts
+##########
 
+Contracts in Solidity are similar to classes in object-oriented languages. They
+contain persistent data in state variables, and functions that can modify these
+variables. Calling a function on a different contract (instance) will perform
+an EVM function call and thus switch the context such that state variables
+in the calling contract are
+inaccessible. A contract and its functions need to be called for anything to happen.
+There is no "cron" concept in Ethereum to call a function at a particular event automatically.
+>>>>>>> 4e1de370d72a24f5c2f9d10f3946225f6c902a4b
+
+.. include:: contracts/creating-contracts.rst
+
+<<<<<<< HEAD
 ***************
 Crear contratos
 ***************
@@ -1035,3 +1052,23 @@ También es posible extender los tipos elementales de la siguiente manera:
     }
 
 Nótese que cualquier llamada a una librería es en realidad una llamada a una función de la EVM. Esto significa que si se envían tipos de memoria o de valor, se va a realizar una copia, incluso de la variable ``self``. La única situación en la que no se va a realizar una copia es cuando se utilizan variables que hacen referencia al almacenamiento.
+=======
+.. include:: contracts/visibility-and-getters.rst
+
+.. include:: contracts/function-modifiers.rst
+
+.. include:: contracts/constant-state-variables.rst
+.. include:: contracts/functions.rst
+
+.. include:: contracts/events.rst
+.. include:: contracts/errors.rst
+
+.. include:: contracts/inheritance.rst
+
+.. include:: contracts/abstract-contracts.rst
+.. include:: contracts/interfaces.rst
+
+.. include:: contracts/libraries.rst
+
+.. include:: contracts/using-for.rst
+>>>>>>> 4e1de370d72a24f5c2f9d10f3946225f6c902a4b
