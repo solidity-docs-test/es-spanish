@@ -10,6 +10,7 @@ Patrones comunes
 Retirada desde contratos
 ************************
 
+<<<<<<< HEAD
 El método recomendado de envío de fondos después de una acción,
 es usando el patrón de retirada (withdrawal pattern). Aunque el método
 más intuitivo para enviar Ether tras una acción es
@@ -24,10 +25,27 @@ al contrato a fin de convertirse en el más "adinerado", inspirado por
 
 En el siguiente contrato, si dejas de ser el más adinerado,
 recibes los fondos de la persona que te destronó.
+=======
+The recommended method of sending funds after an effect
+is using the withdrawal pattern. Although the most intuitive
+method of sending Ether, as a result of an effect, is a
+direct ``transfer`` call, this is not recommended as it
+introduces a potential security risk. You may read
+more about this on the :ref:`security_considerations` page.
 
-::
+The following is an example of the withdrawal pattern in practice in
+a contract where the goal is to send the most money to the
+contract in order to become the "richest", inspired by
+`King of the Ether <https://www.kingoftheether.com/>`_.
 
-    pragma solidity ^0.4.11;
+In the following contract, if you are no longer the richest,
+you receive the funds of the person who is now the richest.
+>>>>>>> 559174054f387db537714b196651282b0dcb77d5
+
+.. code-block:: solidity
+
+    // SPDX-License-Identifier: GPL-3.0
+    pragma solidity ^0.8.4;
 
     contract WithdrawalContract {
         address public richest;
@@ -35,11 +53,20 @@ recibes los fondos de la persona que te destronó.
 
         mapping (address => uint) pendingWithdrawals;
 
+<<<<<<< HEAD
         function WithdrawalContract() public payable {
+=======
+        /// The amount of Ether sent was not higher than
+        /// the currently highest amount.
+        error NotEnoughEther();
+
+        constructor() payable {
+>>>>>>> 559174054f387db537714b196651282b0dcb77d5
             richest = msg.sender;
             mostSent = msg.value;
         }
 
+<<<<<<< HEAD
         function becomeRichest() public payable returns (bool) {
             if (msg.value > mostSent) {
                 pendingWithdrawals[richest] += msg.value;
@@ -49,6 +76,13 @@ recibes los fondos de la persona que te destronó.
             } else {
                 return false;
             }
+=======
+        function becomeRichest() public payable {
+            if (msg.value <= mostSent) revert NotEnoughEther();
+            pendingWithdrawals[richest] += msg.value;
+            richest = msg.sender;
+            mostSent = msg.value;
+>>>>>>> 559174054f387db537714b196651282b0dcb77d5
         }
 
         function withdraw() public {
@@ -56,20 +90,22 @@ recibes los fondos de la persona que te destronó.
             // Acuérdate de poner a cero la cantidad a reembolsar antes
             // de enviarlo para evitar re-entrancy attacks
             pendingWithdrawals[msg.sender] = 0;
-            msg.sender.transfer(amount);
+            payable(msg.sender).transfer(amount);
         }
     }
 
 Esto en lugar del patrón más intuitivo de envío:
 
-::
+.. code-block:: solidity
 
-    pragma solidity ^0.4.11;
+    // SPDX-License-Identifier: GPL-3.0
+    pragma solidity ^0.8.4;
 
     contract SendContract {
-        address public richest;
+        address payable public richest;
         uint public mostSent;
 
+<<<<<<< HEAD
         function SendContract() public payable {
             richest = msg.sender;
             mostSent = msg.value;
@@ -96,6 +132,34 @@ que falla (ej. usando ``revert()`` o simplemente consumiendo más de
 para enviar fondos al contrato "envenenado", fallará
 y también fallará la función ``becomeRichest``, bloqueando el
 contrario para siempre.
+=======
+        /// The amount of Ether sent was not higher than
+        /// the currently highest amount.
+        error NotEnoughEther();
+
+        constructor() payable {
+            richest = payable(msg.sender);
+            mostSent = msg.value;
+        }
+
+        function becomeRichest() public payable {
+            if (msg.value <= mostSent) revert NotEnoughEther();
+            // This line can cause problems (explained below).
+            richest.transfer(msg.value);
+            richest = payable(msg.sender);
+            mostSent = msg.value;
+        }
+    }
+
+Notice that, in this example, an attacker could trap the
+contract into an unusable state by causing ``richest`` to be
+the address of a contract that has a receive or fallback function
+which fails (e.g. by using ``revert()`` or by just
+consuming more than the 2300 gas stipend transferred to them). That way,
+whenever ``transfer`` is called to deliver funds to the
+"poisoned" contract, it will fail and thus also ``becomeRichest``
+will fail, with the contract being stuck forever.
+>>>>>>> 559174054f387db537714b196651282b0dcb77d5
 
 Por el contrario, si usas el patrón "withdrawl" del primer ejemplo,
 el atacante sólo puede causar que su propio withdrawl falle y no
@@ -114,6 +178,7 @@ contrato. Lo puedes hacer un poco más difícil de leer usando
 criptografía, pero si tu contrato debe leer los datos, todos
 podrán leerlo.
 
+<<<<<<< HEAD
 Puedes restringir el acceso de lectura al estado de tu contrato
 por **otros contratos**. Esto ocurre por defecto
 salvo que declares tus variables como ``public``.
@@ -121,23 +186,50 @@ salvo que declares tus variables como ``public``.
 Además, puedes restringir quién puede hacer modificaciones
 al estado de tu contrato o quién puede llamar a las funciones.
 De eso se trata esta sección.
+=======
+You can restrict read access to your contract's state
+by **other contracts**. That is actually the default
+unless you declare your state variables ``public``.
+
+Furthermore, you can restrict who can make modifications
+to your contract's state or call your contract's
+functions and this is what this section is about.
+>>>>>>> 559174054f387db537714b196651282b0dcb77d5
 
 .. index:: function;modifier
 
 El uso de **modificadores de funciones**
 hace estas restricciones altamente visibles.
 
-::
+.. code-block:: solidity
+    :force:
 
-    pragma solidity ^0.4.11;
+    // SPDX-License-Identifier: GPL-3.0
+    pragma solidity ^0.8.4;
 
     contract AccessRestriction {
         // Estas serán asignadas en la fase de
         // compilación, donde `msg.sender` es
         // la cuenta que crea este contrato.
         address public owner = msg.sender;
-        uint public creationTime = now;
+        uint public creationTime = block.timestamp;
 
+        // Now follows a list of errors that
+        // this contract can generate together
+        // with a textual explanation in special
+        // comments.
+
+        /// Sender not authorized for this
+        /// operation.
+        error Unauthorized();
+
+        /// Function called too early.
+        error TooEarly();
+
+        /// Not enough Ether sent with function call.
+        error NotEnoughEther();
+
+<<<<<<< HEAD
         // Los modificadores pueden usarse para
         // cambiar el cuerpo de una función.
         // Si se usa este modificador, agregará
@@ -157,14 +249,36 @@ hace estas restricciones altamente visibles.
         /// Hacer que `_newOwner` sea el nuevo owner de
         /// este contrato.
         function changeOwner(address _newOwner)
+=======
+        // Modifiers can be used to change
+        // the body of a function.
+        // If this modifier is used, it will
+        // prepend a check that only passes
+        // if the function is called from
+        // a certain address.
+        modifier onlyBy(address account)
+        {
+            if (msg.sender != account)
+                revert Unauthorized();
+            // Do not forget the "_;"! It will
+            // be replaced by the actual function
+            // body when the modifier is used.
+            _;
+        }
+
+        /// Make `newOwner` the new owner of this
+        /// contract.
+        function changeOwner(address newOwner)
+>>>>>>> 559174054f387db537714b196651282b0dcb77d5
             public
             onlyBy(owner)
         {
-            owner = _newOwner;
+            owner = newOwner;
         }
 
-        modifier onlyAfter(uint _time) {
-            require(now >= _time);
+        modifier onlyAfter(uint time) {
+            if (block.timestamp < time)
+                revert TooEarly();
             _;
         }
 
@@ -180,6 +294,7 @@ hace estas restricciones altamente visibles.
             delete owner;
         }
 
+<<<<<<< HEAD
         // Este modificador requiere del pago de
         // una comisión asociada a la llamada
         // de una función.
@@ -191,11 +306,24 @@ hace estas restricciones altamente visibles.
         // saltarse la parte después de `_;`.
         modifier costs(uint _amount) {
             require(msg.value >= _amount);
+=======
+        // This modifier requires a certain
+        // fee being associated with a function call.
+        // If the caller sent too much, he or she is
+        // refunded, but only after the function body.
+        // This was dangerous before Solidity version 0.4.0,
+        // where it was possible to skip the part after `_;`.
+        modifier costs(uint amount) {
+            if (msg.value < amount)
+                revert NotEnoughEther();
+
+>>>>>>> 559174054f387db537714b196651282b0dcb77d5
             _;
-            if (msg.value > _amount)
-                msg.sender.send(msg.value - _amount);
+            if (msg.value > amount)
+                payable(msg.sender).transfer(msg.value - amount);
         }
 
+<<<<<<< HEAD
         function forceOwnerChange(address _newOwner)
             public
             costs(200 ether)
@@ -205,6 +333,18 @@ hace estas restricciones altamente visibles.
             if (uint(owner) & 0 == 1)
                 // Esto no se hacía antes de Solidity
                 // 0.4.0
+=======
+        function forceOwnerChange(address newOwner)
+            public
+            payable
+            costs(200 ether)
+        {
+            owner = newOwner;
+            // just some example condition
+            if (uint160(owner) & 0 == 1)
+                // This did not refund for Solidity
+                // before version 0.4.0.
+>>>>>>> 559174054f387db537714b196651282b0dcb77d5
                 return;
             // reembolsar los fees excesivos
         }
@@ -247,9 +387,15 @@ En el siguiente ejemplo,
 el modificador ``atStage`` asegura que la función
 sólo pueda ser llamada en una cierta etapa.
 
+<<<<<<< HEAD
 El modificador ``timeTransitions`` gestiona las
 transiciones de etapas de forma automática en función
 del tiempo. Debe ser usado en todas las funciones.
+=======
+Automatic timed transitions
+are handled by the modifier ``timedTransitions``, which
+should be used for all functions.
+>>>>>>> 559174054f387db537714b196651282b0dcb77d5
 
 .. note::
     **El orden de los modificadores importa**.
@@ -275,9 +421,11 @@ cuando la función termine.
     se ejecutará incluso en el caso de que la función
     ejecute explícitamente un return.
 
-::
+.. code-block:: solidity
+    :force:
 
-    pragma solidity ^0.4.11;
+    // SPDX-License-Identifier: GPL-3.0
+    pragma solidity ^0.8.4;
 
     contract StateMachine {
         enum Stages {
@@ -287,14 +435,17 @@ cuando la función termine.
             AreWeDoneYet,
             Finished
         }
+        /// Function cannot be called at this time.
+        error FunctionInvalidAtThisStage();
 
         // Ésta es la etapa actual.
         Stages public stage = Stages.AcceptingBlindedBids;
 
-        uint public creationTime = now;
+        uint public creationTime = block.timestamp;
 
-        modifier atStage(Stages _stage) {
-            require(stage == _stage);
+        modifier atStage(Stages stage_) {
+            if (stage != stage_)
+                revert FunctionInvalidAtThisStage();
             _;
         }
 
@@ -307,10 +458,10 @@ cuando la función termine.
         // no se tendrá en cuenta la nueva etapa.
         modifier timedTransitions() {
             if (stage == Stages.AcceptingBlindedBids &&
-                        now >= creationTime + 10 days)
+                        block.timestamp >= creationTime + 10 days)
                 nextStage();
             if (stage == Stages.RevealBids &&
-                    now >= creationTime + 12 days)
+                    block.timestamp >= creationTime + 12 days)
                 nextStage();
             // La transición del resto de etapas se produce por transacciones
             _;
@@ -318,7 +469,11 @@ cuando la función termine.
 
         // ¡El orden de los modificadores importa aquí!
         function bid()
+<<<<<<< HEAD
             public 
+=======
+            public
+>>>>>>> 559174054f387db537714b196651282b0dcb77d5
             payable
             timedTransitions
             atStage(Stages.AcceptingBlindedBids)
